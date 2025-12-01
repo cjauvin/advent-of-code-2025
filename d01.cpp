@@ -26,8 +26,8 @@ int part2(std::vector<std::pair<int,int>>& values) {
         for (int i = 0; i < value; i++) {
             dial += step;
             dial = dial % 100;
-             if (dial < 0) dial += 100;
-             n_zeros += (dial == 0);
+            if (dial < 0) dial += 100;
+            n_zeros += (dial == 0);
         }
     }
 
