@@ -10,25 +10,25 @@
 
 using namespace std;
 
-using Range  = std::pair<int64_t, int64_t>;
-using Ranges = std::vector<Range>;
+using Range  = pair<int64_t, int64_t>;
+using Ranges = vector<Range>;
 
-static std::int64_t to_i64(std::string_view s) {
-    std::int64_t v{};
+static int64_t to_i64(string_view s) {
+    int64_t v{};
     auto [p, ec] = from_chars(s.data(), s.data() + s.size(), v);
-    if (ec != std::errc{} || p != s.data() + s.size()) throw std::runtime_error("bad int");
+    if (ec != errc{} || p != s.data() + s.size()) throw runtime_error("bad int");
     return v;
 }
 
-Ranges parse_ranges(std::string_view s) {
+Ranges parse_ranges(string_view s) {
     Ranges out;
     while (!s.empty()) {
         auto comma = s.find(',');
         auto tok = s.substr(0, comma);
-        s = (comma == std::string_view::npos) ? std::string_view{} : s.substr(comma + 1);
+        s = (comma == string_view::npos) ? string_view{} : s.substr(comma + 1);
 
         auto dash = tok.find('-');
-        if (dash == std::string_view::npos) throw std::runtime_error("missing '-'");
+        if (dash == string_view::npos) throw runtime_error("missing '-'");
         out.emplace_back(to_i64(tok.substr(0, dash)), to_i64(tok.substr(dash + 1)));
     }
     return out;
@@ -45,7 +45,7 @@ Ranges get_data() {
     ifstream file("d02.txt");
     string s{istreambuf_iterator<char>(file), istreambuf_iterator<char>()};
     // trim
-    while (!s.empty() && std::isspace(static_cast<unsigned char>(s.back())))
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
         s.pop_back();
     Ranges ranges = parse_ranges(s);
     assert(ranges.size() == 36);
@@ -68,8 +68,8 @@ int64_t part1(Ranges& ranges) {
     return sum;
 }
 
-string repeat(std::string_view piece, size_t n) {
-    std::string out;
+string repeat(string_view piece, size_t n) {
+    string out;
     out.reserve(piece.size() * n);
     for (size_t i = 0; i < n; ++i) out += piece;   // or out.append(piece);
     return out;
